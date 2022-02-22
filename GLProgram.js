@@ -1,5 +1,6 @@
 import setup_shader from "./shader.js";
-import {COLOR} from "./config.js"
+import {COLOR} from "./config.js";
+import * as Utils from "./utils.js";
 
 class GLProgram {
 	constructor(canvas, clear_color = COLOR.CLEAR_COLOR) {
@@ -60,13 +61,41 @@ class GLProgram {
 
 	drawPolygon(vertices, color = COLOR.VERTEX_COLOR) {
 		const n = vertices.length;
-		const center = vertices[0];
+		let p = JSON.parse(JSON.stringify(vertices)); // deep cloning wkwk
 
-		for (let i = 1; i < n; i++) {
-			let v1 = vertices[i % n];
-			let v2 = vertices[(i + 1) % n];
-			let v3 = center;
-			this.drawTriangle([v1, v2, v3], color);
+		// check simplicity, O(n^2)
+		let is_simple = true;
+		for (let i=0; i<n; i++){
+			for (let j=i+1; j<n; j++){
+				if ((j-i+n)%n < 2 || (i-j+n)%n < 2) continue;
+				let a = p[i], b = p[(i+1)%n];
+				let c = p[j], d = p[(j+1)%n];
+				if (Utils.checkIntersect(a, b, c, d)){
+					console.log(a, b, c, d);
+					is_simple = false;
+				}
+			}
+		}
+
+		if (is_simple){
+			// ear clipping method, O(n^3)
+			for (let i=0; i<n-3; i++){ // n-3 first triangles
+				const idx = Utils.getMinimumAngleEar(p);
+				console.log(idx, p[idx]);
+				const m = p.length;
+				this.drawTriangle([p[(idx-1+m)%m], p[idx], p[(idx+1)%m]], color);
+				p.splice(idx, 1); // remove ear tip
+			}
+			// draw last triangle
+			this.drawTriangle([p[0], p[1], p[2]], color);
+		}
+		else{
+			// fan method lol
+			for (let i = 1; i < n; i++) {
+				let v1 = vertices[i % n];
+				let v2 = vertices[(i + 1) % n];
+				this.drawTriangle([v1, v2, vertices[0]], color);
+			}
 		}
 	}
 }
