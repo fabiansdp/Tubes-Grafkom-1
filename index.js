@@ -10,6 +10,12 @@ canvas.addEventListener('mousemove', mousemove);
 const lineButton = document.querySelector('button[name="line"]');
 lineButton.addEventListener('click', toggleDrawLine);
 
+// Get clear button
+const clearButton = document.querySelector('button[name="clear"]');
+clearButton.addEventListener('click', () => {
+    gl.clear();
+});
+
 
 // gl.drawTriangle(SHAPE.TRIANGLE, COLOR.BLUE);
 // gl.drawSquare(SHAPE.SQUARE, COLOR.RED);

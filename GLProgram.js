@@ -57,6 +57,11 @@ class GLProgram {
 		})
 	}
 
+	clear() {
+		this.object = [];
+		this.gl.clear(gl.COLOR_BUFFER_BIT);
+	}
+
 	drawLine([v1, v2], color = COLOR.VERTEX_COLOR) {
 		const vertices = new Float32Array([...v1, ...v2]);
 
