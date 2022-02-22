@@ -71,7 +71,7 @@ class GLProgram {
 				let a = p[i], b = p[(i+1)%n];
 				let c = p[j], d = p[(j+1)%n];
 				if (Utils.checkIntersect(a, b, c, d)){
-					console.log(a, b, c, d);
+					// console.log(a, b, c, d);
 					is_simple = false;
 				}
 			}
@@ -81,7 +81,7 @@ class GLProgram {
 			// ear clipping method, O(n^3)
 			for (let i=0; i<n-3; i++){ // n-3 first triangles
 				const idx = Utils.getMinimumAngleEar(p);
-				console.log(idx, p[idx]);
+				// console.log(idx, p[idx]);
 				const m = p.length;
 				this.drawTriangle([p[(idx-1+m)%m], p[idx], p[(idx+1)%m]], color);
 				p.splice(idx, 1); // remove ear tip

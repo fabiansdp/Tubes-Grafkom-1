@@ -14,7 +14,8 @@ var gl = new GLProgram(canvas);
 // gl.drawPolygon(SHAPE.POLYGON(13), COLOR.GREEN);
 
 // tes wibi
-gl.drawPolygon(SHAPE.LETTERG, COLOR.GREEN); // ok
-gl.drawPolygon(SHAPE.CONVEX, COLOR.BLUE); // ok
-gl.drawPolygon(SHAPE.WEIRDCONVEX, COLOR.RED); // ok
+// gl.drawPolygon(SHAPE.LETTERG, COLOR.GREEN); // ok
+// gl.drawPolygon(SHAPE.CONVEX, COLOR.BLUE); // ok
+// gl.drawPolygon(SHAPE.WEIRDCONVEX, COLOR.RED); // ok
 // gl.drawPolygon(SHAPE.NOTSIMPLE, COLOR.GREEN); // ok
+// gl.drawPolygon(SHAPE.HOLE, COLOR.GREEN); // lubangnya ilang
