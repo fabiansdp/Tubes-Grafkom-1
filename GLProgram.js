@@ -20,7 +20,7 @@ class GLProgram {
 		this.vertexShader = vertexShader;
 		this.fragmentShader = fragmentShader;
 		this.program = program;
-    this.object = [];
+    	this.object = [];
 	}
 
 	parseColorObj(color, is255 = false) {
@@ -30,12 +30,9 @@ class GLProgram {
 		return [color.R, color.G, color.B, color.A];
 	}
 
-	drawTriangle([v1, v2, v3], color = COLOR.VERTEX_COLOR) {
-		const vertices = new Float32Array([...v1, ...v2, ...v3]);
+	initBuffer(vertices, color) {
+		// Create and bind buffer
 		var buffer = this.gl.createBuffer();
-		color = this.parseColorObj(color);
-
-		//creating buffer
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, buffer);
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, vertices, this.gl.STATIC_DRAW);
 		this.gl.useProgram(this.program);
@@ -48,9 +45,29 @@ class GLProgram {
 		this.program.position = this.gl.getAttribLocation(this.program, "position");
 		this.gl.enableVertexAttribArray(this.program.position);
 		this.gl.vertexAttribPointer(this.program.position, 2, this.gl.FLOAT, false, 0, 0);
+	}
 
+	render(method, vertices, color, n) {
+		// Init buffer
+		this.initBuffer(vertices, color);
 		//rendering
-		this.gl.drawArrays(this.gl.TRIANGLES, 0, vertices.length / 2);
+		this.gl.drawArrays(method, 0, n);
+	}
+
+	drawLine([v1, v2], color = COLOR.VERTEX_COLOR) {
+		const vertices = new Float32Array([...v1, ...v2]);
+
+		color = this.parseColorObj(color);
+
+		this.render(this.gl.LINE_STRIP, vertices, color, vertices.length/2);
+	}
+
+	drawTriangle([v1, v2, v3], color = COLOR.VERTEX_COLOR) {
+		const vertices = new Float32Array([...v1, ...v2, ...v3]);
+		
+		color = this.parseColorObj(color);
+
+		this.render(this.gl.TRIANGLES, vertices, color, vertices.length/2);
 	}
 
 	drawSquare([v1, v2, v3, v4], color = COLOR.VERTEX_COLOR) {

@@ -1,8 +1,8 @@
 export const COLOR = {
 	CLEAR_COLOR: {
-		R: 0.15,
-		G: 0.15,
-		B: 0.15,
+		R: 219/255,
+		G: 219/255,
+		B: 219/255,
 		A: 1,
 	},
 	VERTEX_COLOR: {

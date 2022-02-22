@@ -19,3 +19,15 @@ var gl = new GLProgram(canvas);
 // gl.drawPolygon(SHAPE.WEIRDCONVEX, COLOR.RED); // ok
 // gl.drawPolygon(SHAPE.NOTSIMPLE, COLOR.GREEN); // ok
 // gl.drawPolygon(SHAPE.HOLE, COLOR.GREEN); // lubangnya ilang
+
+
+// Tes fabian
+// gl.drawLine([
+//     [-0.5, -0.5],
+//     [0.5, -0.5],
+// ], COLOR.BLUE);
+
+// gl.drawLine([
+//     [-0.5, 0.5],
+//     [0.5, -0.5],
+// ], COLOR.BLUE);
