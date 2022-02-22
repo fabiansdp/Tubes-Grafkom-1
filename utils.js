@@ -1,46 +1,46 @@
 
 // geometry
 
-export const EPS = 1e-11; // epsilon
+const EPS = 1e-11; // epsilon
 
-export const vecLen = (a) => {
+const vecLen = (a) => {
 	return Math.sqrt(a[0] * a[0] + a[1] * a[1]);
 }
 
-export const vecSub = (a, b) => {
+const vecSub = (a, b) => {
 	// returns vector subtraction a - b
 	return [a[0] - b[0], a[1] - b[1]];
 }
 
-export const vecDot = (a, b) => {
+const vecDot = (a, b) => {
 	// returns dot product of vector a and b
 	return a[0] * b[0] + a[1] * b[1];
 }
 
-export const vecCross = (a, b) => {
+const vecCross = (a, b) => {
 	// returns cross product of vector a and b
 	return a[0] * b[1] - a[1] * b[0];
 }
 
-export const vecAngle = (a, b) => {
+const vecAngle = (a, b) => {
 	// returns angle between two vectors a and b
 	return Math.acos(vecDot(a, b) / (vecLen(a) * vecLen(b)));
 }
 
-export const sgn = (a) => {
+const sgn = (a) => {
 	if (Math.abs(a) < EPS) return 0;
 	else if (a > 0) return 1;
 	else return -1;
 }
 
-export const inter1d = (a, b, c, d) => {
+const inter1d = (a, b, c, d) => {
 	// returns true if 1d line segment a-b & c-d intersects
 	if (a > b) [a, b] = [b, a]; // swap
 	if (c > d) [c, d] = [d, c]; // swap
 	return Math.max(a, c) < Math.min(b, d); // notice strict ineq
 }
 
-export const checkIntersect = (a, b, c, d) => {
+const checkIntersect = (a, b, c, d) => {
 	// returns true if 2d line segment a-b & c-d intersects
 	let ca = vecSub(a, c), cd = vecSub(d, c), cb = vecSub(b, c);
 	if (Math.abs(vecCross(ca, cd)) < EPS && Math.abs(vecCross(cb, cd)) < EPS){
@@ -50,7 +50,7 @@ export const checkIntersect = (a, b, c, d) => {
 	return sgn(vecCross(ab, ac)) != sgn(vecCross(ab, ad)) && sgn(vecCross(cd, ca)) != sgn(vecCross(cd, cb));
 }
 
-export const polygonDet = (vertices) => {
+const polygonDet = (vertices) => {
 	// returns determinant of polygon matrix, useful for determining orientation
 	const n = vertices.length;
 	let ret = 0;
@@ -58,7 +58,7 @@ export const polygonDet = (vertices) => {
 	return ret;
 }
 
-export const getMinimumAngleEar = (vertices) => {
+const getMinimumAngleEar = (vertices) => {
 	const orientation = sgn(polygonDet(vertices));
 	const m = vertices.length;
 	let idx, mn = 100;

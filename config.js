@@ -1,4 +1,4 @@
-export const COLOR = {
+const COLOR = {
 	CLEAR_COLOR: {
 		R: 219/255,
 		G: 219/255,
@@ -54,7 +54,7 @@ const generateYRange = (range) => {
 	return res;
 };
 
-export const SHAPE = {
+const SHAPE = {
 	TRIANGLE: [
 		[-0.5, -0.5],
 		[0.5, -0.5],

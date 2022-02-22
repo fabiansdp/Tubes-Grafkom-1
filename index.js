@@ -1,13 +1,15 @@
-import GLProgram from "./GLProgram.js";
-import {COLOR, SHAPE} from "./config.js";
-
-//creating canvas
-const canvas = document.createElement("canvas");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-document.body.appendChild(canvas);
-
+//Get canvas
+const canvas = document.getElementById("canvas");
 var gl = new GLProgram(canvas);
+
+// Mouse listeners
+canvas.addEventListener('mousedown', mousedown);
+canvas.addEventListener('mousemove', mousemove);
+
+// Get line button
+const lineButton = document.querySelector('button[name="line"]');
+lineButton.addEventListener('click', toggleDrawLine);
+
 
 // gl.drawTriangle(SHAPE.TRIANGLE, COLOR.BLUE);
 // gl.drawSquare(SHAPE.SQUARE, COLOR.RED);
@@ -29,5 +31,5 @@ var gl = new GLProgram(canvas);
 
 // gl.drawLine([
 //     [-0.5, 0.5],
-//     [0.5, -0.5],
+//     [0.5, -0.7],
 // ], COLOR.BLUE);

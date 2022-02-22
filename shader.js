@@ -28,5 +28,3 @@ const setup_shader = (gl) => {
 
   return {vertexShader, fragmentShader}
 }
-
-export default setup_shader;

@@ -8,6 +8,13 @@
 	</head>
 	<body>
 		<style>
+			body {
+				margin: 0;
+			}
+
+			canvas {
+				background-color: rgb(219, 219, 219);
+			}
 			.menu-container {
 				display: grid;
 				grid-template-rows: 1fr;
@@ -18,15 +25,23 @@
 				text-align: center;
 				cursor: pointer;
 				padding: 5px;
+				border: 1px solid black;
 			}
 		</style>
 		<div class="menu-container">
-			<div class="menu">Point</div>
-			<div class="menu">Line</div>
-			<div class="menu">Square</div>
-			<div class="menu">Quadrilateral</div>
-			<div class="menu">Polygon</div>
+			<button class="menu" name="line">Line</button>
+			<button class="menu">Square</button>
+			<button class="menu">Quadrilateral</button>
+			<button class="menu">Polygon</button>
 		</div>
+		<canvas id="canvas" height="700" width="1000"></canvas>
 	</body>
-	<script src="index.js" type="module"></script>
+	<script src="config.js"></script>
+	<script src="shader.js"></script>
+	<script src="GLProgram.js"></script>
+	<script src="utils.js"></script>
+	<script src="mouse.js"></script>
+	<script src="state.js"></script>
+	<script src="draw.js"></script>
+	<script src="index.js"></script>
 </html>

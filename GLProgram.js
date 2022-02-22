@@ -1,12 +1,6 @@
-import setup_shader from "./shader.js";
-import {COLOR} from "./config.js";
-import * as Utils from "./utils.js";
-
 class GLProgram {
 	constructor(canvas, clear_color = COLOR.CLEAR_COLOR) {
 		var gl = canvas.getContext("webgl");
-		gl.clearColor(clear_color.R, clear_color.G, clear_color.B, clear_color.A);
-		gl.clear(gl.COLOR_BUFFER_BIT);
 
 		const {vertexShader, fragmentShader} = setup_shader(gl);
 
@@ -54,12 +48,19 @@ class GLProgram {
 		this.gl.drawArrays(method, 0, n);
 	}
 
+	renderAll() {
+		this.object.forEach((object) => {
+			const {method, vertices, color} = object;
+			if (method === "line") {
+				this.drawLine(vertices, color);
+			}
+		})
+	}
+
 	drawLine([v1, v2], color = COLOR.VERTEX_COLOR) {
 		const vertices = new Float32Array([...v1, ...v2]);
 
-		color = this.parseColorObj(color);
-
-		this.render(this.gl.LINE_STRIP, vertices, color, vertices.length/2);
+		this.render(this.gl.LINE_STRIP, vertices, this.parseColorObj(color), vertices.length/2);
 	}
 
 	drawTriangle([v1, v2, v3], color = COLOR.VERTEX_COLOR) {
@@ -116,5 +117,3 @@ class GLProgram {
 		}
 	}
 }
-
-export default GLProgram;
