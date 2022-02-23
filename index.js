@@ -7,16 +7,27 @@ canvas.addEventListener('mousedown', mousedown);
 canvas.addEventListener('mousemove', mousemove);
 
 // Get line button
-const lineButton = document.querySelector('button[name="line"]');
+const lineButton = document.getElementById('line');
 lineButton.addEventListener('click', toggleDrawLine);
 
 // Get clear button
-const clearButton = document.querySelector('button[name="clear"]');
+const clearButton = document.getElementById('clear');
 clearButton.addEventListener('click', () => {
     gl.clear();
 });
 
+// Get download button
+const downloadButton = document.getElementById('download');
+downloadButton.addEventListener('click', () => {
+    gl.downloadJsonData();
+});
 
+
+const fileInput = document.getElementById("file-input");
+fileInput.value = '';
+fileInput.addEventListener('change', (e) => {
+    gl.readUploadedJson(e)
+}, false)
 // gl.drawTriangle(SHAPE.TRIANGLE, COLOR.BLUE);
 // gl.drawSquare(SHAPE.SQUARE, COLOR.RED);
 // gl.drawPolygon(SHAPE.POLYGON(13), COLOR.GREEN);

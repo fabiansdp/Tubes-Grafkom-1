@@ -25,6 +25,27 @@ class GLProgram {
 		return [color.R, color.G, color.B, color.A];
 	}
 
+	downloadJsonData() {
+		const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.objects));
+		let downloadAnchor = document.getElementById('download');
+		downloadAnchor.setAttribute("href", dataStr);
+		downloadAnchor.setAttribute("download", "data.json");
+	}
+
+	readUploadedJson(event) {
+		const file = event.target.files[0];
+
+		if (file) {
+			const fileReader = new FileReader();
+			fileReader.onload = function (e) {
+				const fileContent = JSON.parse(e.target.result);
+				gl.objects = fileContent
+				gl.renderAll();
+			}
+			fileReader.readAsText(file);
+		}
+	}
+
 	getNearestVertex(coordinate) {
 		let minDistance = 9999;
 		let objectIdx = -1;
