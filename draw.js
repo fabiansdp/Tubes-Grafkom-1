@@ -1,39 +1,38 @@
 const toggleDrawLine = () => {
-    isDrawing = !isDrawing;
     drawType = "line";
 }
 
 const mousedown = (e) => {
-    if (isDrawing) {
-        if (drawType === "line") {
-            const coordinate = getWebGLPosition(e, gl);
-            drawVertices.push(coordinate)
-    
-            if (drawVertices.length === 2) {
-                gl.object.push({
-                    method: "line",
-                    vertices: drawVertices,
-                    color: COLOR.RED
-                });
-    
-                drawVertices = [];
-                isDrawing = false;
-                drawType = "";
-                gl.renderAll();
-            }
+    if (drawType === "line") {
+        const coordinate = getWebGLPosition(e, gl);
+
+        if (drawVertices.length === 2) {
+            gl.object.push({
+                method: "line",
+                vertices: [drawVertices[0], coordinate],
+                color: COLOR.RED
+            });
+
+            drawVertices = [];
+            isDrawing = false;
+            drawType = "";
+            gl.renderAll();
+        } else {
+            isDrawing = true;
+            drawVertices.push(coordinate);
         }
     }
 }
 
 const mousemove = (e) => {
-    if (drawVertices.length > 0 && drawType === "line") {
+    // Kalau sudah mulai menggambar
+    if (isDrawing && drawType === "line") {
         const coordinate = getWebGLPosition(e, gl);
-        gl.object.pop();
-        gl.object.push({
-            method: "line",
-            vertices: [drawVertices[0], coordinate],
-            color: COLOR.RED
-        });
+        if (drawVertices.length == 2) {
+            drawVertices.pop();
+        }
+        drawVertices.push(coordinate);
+        gl.drawLine(drawVertices, COLOR.RED);
         gl.renderAll();
     }
 }

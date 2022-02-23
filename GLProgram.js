@@ -48,24 +48,32 @@ class GLProgram {
 		this.gl.drawArrays(method, 0, n);
 	}
 
+	renderPoint() {
+		console.log(this.object)
+	}
+
 	renderAll() {
+		console.log(this.object)
 		this.object.forEach((object) => {
 			const {method, vertices, color} = object;
 			if (method === "line") {
 				this.drawLine(vertices, color);
 			}
+
+			// this.renderPoint();
 		})
 	}
 
 	clear() {
 		this.object = [];
+		console.log(this.object)
 		this.gl.clear(gl.COLOR_BUFFER_BIT);
 	}
 
 	drawLine([v1, v2], color = COLOR.VERTEX_COLOR) {
 		const vertices = new Float32Array([...v1, ...v2]);
 
-		this.render(this.gl.LINE_STRIP, vertices, this.parseColorObj(color), vertices.length/2);
+		this.render(this.gl.LINES, vertices, this.parseColorObj(color), vertices.length/2);
 	}
 
 	drawTriangle([v1, v2, v3], color = COLOR.VERTEX_COLOR) {
