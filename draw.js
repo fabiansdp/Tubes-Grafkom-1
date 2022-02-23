@@ -5,9 +5,9 @@ const toggleDrawLine = () => {
 const mousedown = (e) => {
     if (drawType === "line") {
         const coordinate = getWebGLPosition(e, gl);
-
+        // Kalau sudah mau selesai menggambar garis
         if (drawVertices.length === 2) {
-            gl.object.push({
+            gl.objects.push({
                 method: "line",
                 vertices: [drawVertices[0], coordinate],
                 color: COLOR.RED
@@ -21,18 +21,50 @@ const mousedown = (e) => {
             isDrawing = true;
             drawVertices.push(coordinate);
         }
+
+        return;
+    }
+
+    // Kalau sudah selesai ngedrag
+    if (isDragging) {
+        isDragging = false;
+        return;
+    }
+
+    // Kalau mau ngedrag vertex
+    if (drawType === "") {
+        const coordinate = getWebGLPosition(e, gl);
+        const {method, objectIdx, vertexIdx, distance} = gl.getNearestVertex(coordinate);
+
+        if (distance < 0.02) {
+            isDragging = true;
+            dragObject.objectIdx = objectIdx;
+            dragObject.vertexIdx = vertexIdx;
+            dragObject.method = method;
+        }
+        return;
     }
 }
 
 const mousemove = (e) => {
+    const coordinate = getWebGLPosition(e, gl);
+    // Kalau lagi ngedrag vertex
+    if (isDragging) {
+        const {objectIdx, vertexIdx, method} = dragObject;
+        if (method === "line") {
+            gl.objects[objectIdx].vertices[vertexIdx] = coordinate;
+            gl.renderAll();
+        }
+        return;
+    }
     // Kalau sudah mulai menggambar
     if (isDrawing && drawType === "line") {
-        const coordinate = getWebGLPosition(e, gl);
         if (drawVertices.length == 2) {
             drawVertices.pop();
         }
         drawVertices.push(coordinate);
         gl.drawLine(drawVertices, COLOR.RED);
         gl.renderAll();
+        return
     }
 }

@@ -1,5 +1,5 @@
 class GLProgram {
-	constructor(canvas, clear_color = COLOR.CLEAR_COLOR) {
+	constructor(canvas) {
 		var gl = canvas.getContext("webgl");
 
 		const {vertexShader, fragmentShader} = setup_shader(gl);
@@ -14,7 +14,7 @@ class GLProgram {
 		this.vertexShader = vertexShader;
 		this.fragmentShader = fragmentShader;
 		this.program = program;
-    	this.object = [];
+    	this.objects = [];
 		this.pointSize = 0.015;
 	}
 
@@ -23,6 +23,34 @@ class GLProgram {
 			if (!is255 && value > 1) color[key] = color[key] / 255;
 		}
 		return [color.R, color.G, color.B, color.A];
+	}
+
+	getNearestVertex(coordinate) {
+		let minDistance = 9999;
+		let objectIdx = -1;
+		let vertexIdx = -1;
+		let method = "";
+		
+		for (let i = 0; i < this.objects.length; i++) {
+			const {vertices} = this.objects[i];
+			for (let j = 0; j < vertices.length; j++) {
+				const distance = euclideanDistance(coordinate, vertices[j]);
+
+				if (distance < minDistance) {
+					minDistance = distance;
+					objectIdx = i;
+					vertexIdx = j;
+					method = this.objects[i].method
+				}
+			}
+		}
+
+		return {
+			method,
+			objectIdx,
+			vertexIdx,
+			distance: minDistance
+		};
 	}
 
 	initBuffer(vertices, color) {
@@ -45,13 +73,12 @@ class GLProgram {
 	render(method, vertices, color, n) {
 		// Init buffer
 		this.initBuffer(vertices, color);
-		//rendering
+		// Rendering
 		this.gl.drawArrays(method, 0, n);
 	}
 
 	renderPoint() {
-		this.object.forEach((object) => {
-			// Buat point untuk setiap vortex
+		this.objects.forEach((object) => {
 			object.vertices.forEach((vertex) => {
 				const [x, y] = vertex;
 				const x1 = x - this.pointSize / 2;
@@ -66,7 +93,7 @@ class GLProgram {
 	}
 
 	renderAll() {
-		this.object.forEach((object) => {
+		this.objects.forEach((object) => {
 			const {method, vertices, color} = object;
 			if (method === "line") {
 				this.drawLine(vertices, color);
@@ -77,7 +104,7 @@ class GLProgram {
 	}
 
 	clear() {
-		this.object = [];
+		this.objects = [];
 		this.gl.clear(gl.COLOR_BUFFER_BIT);
 	}
 

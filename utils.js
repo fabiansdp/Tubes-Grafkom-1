@@ -86,3 +86,10 @@ const getMinimumAngleEar = (vertices) => {
 	}
 	return idx;
 }
+
+const euclideanDistance = (v1, v2) => {
+	const [x1, y1] = v1;
+	const [x2, y2] = v2;
+
+	return Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+}
