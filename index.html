@@ -15,10 +15,12 @@
 			canvas {
 				background-color: rgb(219, 219, 219);
 			}
+
+			.menu {
+				width: 150px;
+			}
 			.menu-container {
-				display: grid;
-				grid-template-rows: 1fr;
-				grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+				display: flex;
 			}
 
 			.menu {
@@ -34,6 +36,10 @@
 			<button class="menu">Quadrilateral</button>
 			<button class="menu">Polygon</button>
 			<button class="menu" name="clear">Clear</button>
+			<div>
+				<label>Pilih warna:</label>
+				<input type="color" id="color-selection" value="#ff0000">
+			</div>
 		</div>
 		<canvas id="canvas" height="700" width="1000"></canvas>
 	</body>

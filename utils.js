@@ -93,3 +93,14 @@ const euclideanDistance = (v1, v2) => {
 
 	return Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
 }
+
+
+const hexToRgb = (hexColor) => {
+	const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hexColor);
+	return result ? {
+		R: parseInt(result[1], 16),
+		G: parseInt(result[2], 16),
+		B: parseInt(result[3], 16),
+		A: 1
+	} : null;
+}

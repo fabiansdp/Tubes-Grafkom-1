@@ -7,10 +7,12 @@ const mousedown = (e) => {
         const coordinate = getWebGLPosition(e, gl);
         // Kalau sudah mau selesai menggambar garis
         if (drawVertices.length === 2) {
+            const color = document.getElementById("color-selection").value;
+
             gl.objects.push({
                 method: "line",
                 vertices: [drawVertices[0], coordinate],
-                color: COLOR.RED
+                color: hexToRgb(color)
             });
 
             drawVertices = [];
@@ -59,11 +61,12 @@ const mousemove = (e) => {
     }
     // Kalau sudah mulai menggambar
     if (isDrawing && drawType === "line") {
+        const color = document.getElementById("color-selection").value;
         if (drawVertices.length == 2) {
             drawVertices.pop();
         }
         drawVertices.push(coordinate);
-        gl.drawLine(drawVertices, COLOR.RED);
+        gl.drawLine(drawVertices, hexToRgb(color));
         gl.renderAll();
         return
     }
