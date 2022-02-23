@@ -15,6 +15,7 @@ class GLProgram {
 		this.fragmentShader = fragmentShader;
 		this.program = program;
     	this.object = [];
+		this.pointSize = 0.015;
 	}
 
 	parseColorObj(color, is255 = false) {
@@ -49,24 +50,34 @@ class GLProgram {
 	}
 
 	renderPoint() {
-		console.log(this.object)
+		this.object.forEach((object) => {
+			// Buat point untuk setiap vortex
+			object.vertices.forEach((vertex) => {
+				const [x, y] = vertex;
+				const x1 = x - this.pointSize / 2;
+				const y1 = y - this.pointSize / 2;
+				const x2 = x1 + this.pointSize;
+				const y2 = y1 + this.pointSize;
+				const point = new Float32Array([x1, y1, x2, y1, x1, y2, x2, y2]);
+
+				this.render(this.gl.TRIANGLE_STRIP, point, this.parseColorObj(COLOR.BLUE), point.length/2);
+			})
+		})
 	}
 
 	renderAll() {
-		console.log(this.object)
 		this.object.forEach((object) => {
 			const {method, vertices, color} = object;
 			if (method === "line") {
 				this.drawLine(vertices, color);
 			}
-
-			// this.renderPoint();
 		})
+
+		this.renderPoint();
 	}
 
 	clear() {
 		this.object = [];
-		console.log(this.object)
 		this.gl.clear(gl.COLOR_BUFFER_BIT);
 	}
 
