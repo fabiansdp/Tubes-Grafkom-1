@@ -119,6 +119,9 @@ class GLProgram {
 			if (method === "line") {
 				this.drawLine(vertices, color);
 			}
+			if (method === "polygon") {
+				this.drawPolygon(vertices, color);
+			}
 		})
 
 		this.renderPoint();
@@ -160,7 +163,7 @@ class GLProgram {
 				if ((j-i+n)%n < 2 || (i-j+n)%n < 2) continue;
 				let a = p[i], b = p[(i+1)%n];
 				let c = p[j], d = p[(j+1)%n];
-				if (Utils.checkIntersect(a, b, c, d)){
+				if (checkIntersect(a, b, c, d)){
 					// console.log(a, b, c, d);
 					is_simple = false;
 				}
@@ -170,7 +173,7 @@ class GLProgram {
 		if (is_simple){
 			// ear clipping method, O(n^3)
 			for (let i=0; i<n-3; i++){ // n-3 first triangles
-				const idx = Utils.getMinimumAngleEar(p);
+				const idx = getMinimumAngleEar(p);
 				// console.log(idx, p[idx]);
 				const m = p.length;
 				this.drawTriangle([p[(idx-1+m)%m], p[idx], p[(idx+1)%m]], color);

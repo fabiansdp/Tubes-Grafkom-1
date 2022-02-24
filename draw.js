@@ -2,6 +2,32 @@ const toggleDrawLine = () => {
     drawType = "line";
 }
 
+const toggleDrawPolygon = () => {
+    if (isDrawing && drawType === "polygon"){
+        // turn off
+        if (drawVertices.length > 2){
+            gl.objects.push({
+                method: "polygon",
+                vertices: drawVertices,
+                color: hexToRgb(document.getElementById("color-selection").value)
+            });
+        }
+        isDrawing = false;
+        drawVertices = [];
+        drawType = "";
+        gl.renderAll();
+        // TBD: ganti text button
+        document.getElementById('polygon').innerHTML = "Polygon";
+    }
+    else{
+        // turn on
+        isDrawing = true;
+        drawType = "polygon";
+        // TBD: ganti text button
+        document.getElementById('polygon').innerHTML = "Render Polygon";
+    }
+}
+
 const mousedown = (e) => {
     if (drawType === "line") {
         const coordinate = getWebGLPosition(e, gl);
@@ -48,6 +74,20 @@ const mousedown = (e) => {
     }
 }
 
+const mouseclick = (e) => {
+    if (isDrawing && drawType === "polygon"){
+        const coordinate = getWebGLPosition(e, gl);
+        const color = document.getElementById("color-selection").value;
+        drawVertices.push(coordinate);
+        for (let i=0; i+1<drawVertices.length; i++){
+            gl.drawLine([drawVertices[i], drawVertices[i+1]], hexToRgb(color));
+        }
+        gl.drawLine([drawVertices[0], drawVertices[drawVertices.length - 1]], hexToRgb(color));
+        gl.renderAll();
+        return;
+    }
+}
+
 const mousemove = (e) => {
     const coordinate = getWebGLPosition(e, gl);
     // Kalau lagi ngedrag vertex
@@ -69,5 +109,17 @@ const mousemove = (e) => {
         gl.drawLine(drawVertices, hexToRgb(color));
         gl.renderAll();
         return
+    }
+    if (isDrawing && drawType === "polygon") {
+        const color = document.getElementById("color-selection").value;
+        for (let i=0; i+1<drawVertices.length; i++){
+            gl.drawLine([drawVertices[i], drawVertices[i+1]], hexToRgb(color));
+        }
+        if (drawVertices.length > 0){
+            gl.drawLine([drawVertices.slice(-1)[0], coordinate], hexToRgb(color));
+            if (drawVertices.length > 1) gl.drawLine([drawVertices[0], coordinate], hexToRgb(color));
+            gl.renderAll();
+        }
+        return;
     }
 }

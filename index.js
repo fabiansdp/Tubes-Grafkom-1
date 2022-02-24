@@ -5,10 +5,15 @@ var gl = new GLProgram(canvas);
 // Mouse listeners
 canvas.addEventListener('mousedown', mousedown);
 canvas.addEventListener('mousemove', mousemove);
+canvas.addEventListener('click', mouseclick);
 
 // Get line button
 const lineButton = document.getElementById('line');
 lineButton.addEventListener('click', toggleDrawLine);
+
+// Get polygon button
+const polygonButton = document.getElementById('polygon');
+polygonButton.addEventListener('click', toggleDrawPolygon);
 
 // Get clear button
 const clearButton = document.getElementById('clear');
