@@ -79,11 +79,11 @@ const mouseclick = (e) => {
         const coordinate = getWebGLPosition(e, gl);
         const color = document.getElementById("color-selection").value;
         drawVertices.push(coordinate);
+        gl.renderAll();
         for (let i=0; i+1<drawVertices.length; i++){
             gl.drawLine([drawVertices[i], drawVertices[i+1]], hexToRgb(color));
         }
         gl.drawLine([drawVertices[0], drawVertices[drawVertices.length - 1]], hexToRgb(color));
-        gl.renderAll();
         return;
     }
 }
@@ -112,13 +112,13 @@ const mousemove = (e) => {
     }
     if (isDrawing && drawType === "polygon") {
         const color = document.getElementById("color-selection").value;
+        gl.renderAll();
         for (let i=0; i+1<drawVertices.length; i++){
             gl.drawLine([drawVertices[i], drawVertices[i+1]], hexToRgb(color));
         }
         if (drawVertices.length > 0){
             gl.drawLine([drawVertices.slice(-1)[0], coordinate], hexToRgb(color));
             if (drawVertices.length > 1) gl.drawLine([drawVertices[0], coordinate], hexToRgb(color));
-            gl.renderAll();
         }
         return;
     }
