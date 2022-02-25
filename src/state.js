@@ -3,9 +3,9 @@ let isDragging = false;
 
 let drawType = "";
 let dragObject = {
-    objectIdx: -1,
-    vertexIdx: -1,
-    method: ""
-}
+	objectIdx: -1,
+	vertexIdx: -1,
+	method: "",
+};
 
 let drawVertices = [];

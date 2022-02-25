@@ -4,69 +4,49 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/x-icon" href="/public/geometry.png" />
+		<link rel="stylesheet" href="/styles/index.css" />
 		<title>Canvas WebGL</title>
 	</head>
 	<body>
-		<style>
-			body {
-				margin: 0;
-			}
-
-			canvas {
-				background-color: rgb(219, 219, 219);
-			}
-
-			a {
-				text-decoration: none;
-				outline: 0;
-				outline: none;
-			}
-
-			.menu {
-				width: 150px;
-			}
-
-			.menu-container {
-				display: flex;
-			}
-
-			.menu {
-				text-align: center;
-				cursor: pointer;
-				padding: 5px;
-				border: 1px solid black;
-			}
-
-			.color-picker {
-				margin: 0 10px;
-			}
-		</style>
 		<div class="menu-container">
-			<button class="menu" id="line">Line</button>
-			<button class="menu">Square</button>
-			<button class="menu">Quadrilateral</button>
-			<button class="menu" id="polygon">Polygon</button>
-			<div class="color-picker">
-				<label>Pilih warna:</label>
-				<input type="color" id="color-selection" value="#ff0000">
-			</div>
-			<button class="menu" id="clear">Clear</button>
-			<button class="menu" >
-				<a id="download">Download</a>
+      <h1>Mode : <span id="mode">none</span></h1>
+			<button class="menu" id="line-button">
+				<img src="/public/icons/line-segment.png" /> <span id="line">Line</span>
 			</button>
-			<div>
+			<button class="menu" id="square-button">
+				<img src="/public/icons/square.png" /> <span id="square"> Square </span>
+			</button>
+			<button class="menu" id="quadrilateral-button">
+				<img src="/public/icons/quadrilateral.png" />
+				<span id="quadrilateral">Quadrilateral</span>
+			</button>
+			<button class="menu" id="polygon-button">
+				<img src="/public/icons/polygon.png" /> <span id="polygon">Polygon</span>
+			</button>
+			<div class="menu color-picker">
+				<input type="color" id="color-selection" value="#ff0000" />
+				Select Color
+			</div>
+			<button class="menu" id="clear"><img src="/public/icons/clear.png" />Clear</button>
+			<button class="menu">
+				<img src="/public/icons/download.png" /><a id="download">Download</a>
+			</button>
+			<div class="menu">
 				<label for="upload">Upload json file:</label>
-				<input type="file" id="file-input" accept="application/json">
+				<input type="file" id="file-input" accept="application/json" />
 			</div>
 		</div>
-		<canvas id="canvas" height="700" width="1000"></canvas>
+		<canvas id="canvas" height="720" width="1280"></canvas>
 	</body>
-	<script src="config.js"></script>
-	<script src="shader.js"></script>
-	<script src="GLProgram.js"></script>
-	<script src="utils.js"></script>
-	<script src="mouse.js"></script>
-	<script src="state.js"></script>
-	<script src="draw.js"></script>
-	<script src="index.js"></script>
+	<script src="/src/constant.js"></script>
+	<script src="/src/config.js"></script>
+	<script src="/src/shader.js"></script>
+	<script src="/src/GLProgram.js"></script>
+	<script src="/src/utils.js"></script>
+	<script src="/src/mouse.js"></script>
+	<script src="/src/state.js"></script>
+	<script src="/src/draw.js"></script>
+	<script src="/src/listener.js"></script>
+	<script src="/src/index.js"></script>
 </html>

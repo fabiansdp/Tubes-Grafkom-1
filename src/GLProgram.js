@@ -2,7 +2,7 @@ class GLProgram {
 	constructor(canvas) {
 		var gl = canvas.getContext("webgl");
 
-		const {vertexShader, fragmentShader} = setup_shader(gl);
+		const { vertexShader, fragmentShader } = setup_shader(gl);
 
 		const program = gl.createProgram();
 		gl.attachShader(program, vertexShader);
@@ -14,11 +14,12 @@ class GLProgram {
 		this.vertexShader = vertexShader;
 		this.fragmentShader = fragmentShader;
 		this.program = program;
-    	this.objects = [];
+		this.objects = [];
 		this.pointSize = 0.015;
 	}
 
 	parseColorObj(color, is255 = false) {
+		if (!color) return;
 		for (const [key, value] of Object.entries(color)) {
 			if (!is255 && value > 1) color[key] = color[key] / 255;
 		}
@@ -26,8 +27,9 @@ class GLProgram {
 	}
 
 	downloadJsonData() {
-		const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.objects));
-		let downloadAnchor = document.getElementById('download');
+		const dataStr =
+			"data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.objects));
+		let downloadAnchor = document.getElementById("download");
 		downloadAnchor.setAttribute("href", dataStr);
 		downloadAnchor.setAttribute("download", "data.json");
 	}
@@ -39,9 +41,9 @@ class GLProgram {
 			const fileReader = new FileReader();
 			fileReader.onload = function (e) {
 				const fileContent = JSON.parse(e.target.result);
-				gl.objects = fileContent
+				gl.objects = fileContent;
 				gl.renderAll();
-			}
+			};
 			fileReader.readAsText(file);
 		}
 	}
@@ -51,9 +53,9 @@ class GLProgram {
 		let objectIdx = -1;
 		let vertexIdx = -1;
 		let method = "";
-		
+
 		for (let i = 0; i < this.objects.length; i++) {
-			const {vertices} = this.objects[i];
+			const { vertices } = this.objects[i];
 			for (let j = 0; j < vertices.length; j++) {
 				const distance = euclideanDistance(coordinate, vertices[j]);
 
@@ -61,7 +63,7 @@ class GLProgram {
 					minDistance = distance;
 					objectIdx = i;
 					vertexIdx = j;
-					method = this.objects[i].method
+					method = this.objects[i].method;
 				}
 			}
 		}
@@ -70,7 +72,7 @@ class GLProgram {
 			method,
 			objectIdx,
 			vertexIdx,
-			distance: minDistance
+			distance: minDistance,
 		};
 	}
 
@@ -108,21 +110,24 @@ class GLProgram {
 				const y2 = y1 + this.pointSize;
 				const point = new Float32Array([x1, y1, x2, y1, x1, y2, x2, y2]);
 
-				this.render(this.gl.TRIANGLE_STRIP, point, this.parseColorObj(COLOR.BLUE), point.length/2);
-			})
-		})
+				this.render(
+					this.gl.TRIANGLE_STRIP,
+					point,
+					this.parseColorObj(COLOR.BLUE),
+					point.length / 2
+				);
+			});
+		});
 	}
 
 	renderAll() {
 		this.objects.forEach((object) => {
-			const {method, vertices, color} = object;
-			if (method === "line") {
-				this.drawLine(vertices, color);
-			}
-			if (method === "polygon") {
-				this.drawPolygon(vertices, color);
-			}
-		})
+			const { method, vertices, color } = object;
+			if (method === DRAW_TYPE.LINE) return this.drawLine(vertices, color);
+			if (method === DRAW_TYPE.SQUARE) return this.drawSquare(vertices, color);
+			if (method === DRAW_TYPE.QUADRILATERAL) return this.drawPolygon(vertices, color);
+			if (method === DRAW_TYPE.POLYGON) return this.drawPolygon(vertices, color);
+		});
 
 		this.renderPoint();
 	}
@@ -135,15 +140,16 @@ class GLProgram {
 	drawLine([v1, v2], color = COLOR.VERTEX_COLOR) {
 		const vertices = new Float32Array([...v1, ...v2]);
 
-		this.render(this.gl.LINES, vertices, this.parseColorObj(color), vertices.length/2);
+		this.render(this.gl.LINES, vertices, this.parseColorObj(color), vertices.length / 2);
 	}
 
 	drawTriangle([v1, v2, v3], color = COLOR.VERTEX_COLOR) {
+		if (!v1.length || !v2.length || !v3.length) return;
 		const vertices = new Float32Array([...v1, ...v2, ...v3]);
-		
+
 		color = this.parseColorObj(color);
 
-		this.render(this.gl.TRIANGLES, vertices, color, vertices.length/2);
+		this.render(this.gl.TRIANGLES, vertices, color, vertices.length / 2);
 	}
 
 	drawSquare([v1, v2, v3, v4], color = COLOR.VERTEX_COLOR) {
@@ -158,31 +164,33 @@ class GLProgram {
 
 		// check simplicity, O(n^2)
 		let is_simple = true;
-		for (let i=0; i<n; i++){
-			for (let j=i+1; j<n; j++){
-				if ((j-i+n)%n < 2 || (i-j+n)%n < 2) continue;
-				let a = p[i], b = p[(i+1)%n];
-				let c = p[j], d = p[(j+1)%n];
-				if (checkIntersect(a, b, c, d)){
+		for (let i = 0; i < n; i++) {
+			for (let j = i + 1; j < n; j++) {
+				if ((j - i + n) % n < 2 || (i - j + n) % n < 2) continue;
+				let a = p[i],
+					b = p[(i + 1) % n];
+				let c = p[j],
+					d = p[(j + 1) % n];
+				if (checkIntersect(a, b, c, d)) {
 					// console.log(a, b, c, d);
 					is_simple = false;
 				}
 			}
 		}
 
-		if (is_simple){
+		if (is_simple) {
 			// ear clipping method, O(n^3)
-			for (let i=0; i<n-3; i++){ // n-3 first triangles
+			for (let i = 0; i < n - 3; i++) {
+				// n-3 first triangles
 				const idx = getMinimumAngleEar(p);
 				// console.log(idx, p[idx]);
 				const m = p.length;
-				this.drawTriangle([p[(idx-1+m)%m], p[idx], p[(idx+1)%m]], color);
+				this.drawTriangle([p[(idx - 1 + m) % m], p[idx], p[(idx + 1) % m]], color);
 				p.splice(idx, 1); // remove ear tip
 			}
 			// draw last triangle
 			this.drawTriangle([p[0], p[1], p[2]], color);
-		}
-		else{
+		} else {
 			// fan method lol
 			for (let i = 1; i < n; i++) {
 				let v1 = vertices[i % n];
