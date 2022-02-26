@@ -20,7 +20,7 @@ const mousedown = (e) => {
 			});
 			addElementMenuItem(gl.objects.length - 1, "Line");
 			resetAndRender();
-			break;
+			return;
 		case DRAW_TYPE.SQUARE:
 			//not enough vertex
 			if (drawVertices.length < 2) {
@@ -38,7 +38,7 @@ const mousedown = (e) => {
 			});
 			addElementMenuItem(gl.objects.length - 1, "Square");
 			resetAndRender();
-			break;
+			return;
 		case DRAW_TYPE.RECTANGLE:
 			if (drawVertices.length < 2) {
 				isDrawing = true;
@@ -55,7 +55,7 @@ const mousedown = (e) => {
 			});
 			addElementMenuItem(gl.objects.length - 1, "Rectangle");
 			resetAndRender();
-			break;
+			return;
 		case DRAW_TYPE.QUADRILATERAL:
 			drawVertices.push(coordinate);
 			//turn off
@@ -74,20 +74,21 @@ const mousedown = (e) => {
 				gl.drawLine([drawVertices[i % n], drawVertices[(i + 1) % n]], hexToRgb(color));
 			}
 
-			break;
+			return;
 		case DRAW_TYPE.POLYGON:
 			drawVertices.push(coordinate);
 			gl.renderAll();
 			for (let i = 0; i <= n; i++) {
 				gl.drawLine([drawVertices[i % n], drawVertices[(i + 1) % n]], hexToRgb(color));
 			}
-			break;
+			return;
 	}
 
-	if (!isDrawing) resetMenu();
-	modeText.innerHTML = isDrawing ? `Drawing ${drawType}` : "none";
-
-	if (isDragging) return (isDragging = false);
+	if (isDragging) {
+		isDragging = false
+		modeText.innerHTML = "none"
+		return
+	};
 
 	if (drawType !== "") return;
 
@@ -100,6 +101,7 @@ const mousedown = (e) => {
 		dragObject.objectIdx = objectIdx;
 		dragObject.vertexIdx = vertexIdx;
 		dragObject.method = method;
+		modeText.innerHTML = `Dragging ${method}`
 	}
 	return;
 };

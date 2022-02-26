@@ -227,6 +227,8 @@ const resetAndRender = () => {
 	drawVertices = [];
 	isDrawing = false;
 	drawType = "";
+	if (!isDrawing) resetMenu();
+	modeText.innerHTML = isDrawing ? `Drawing ${drawType}` : "none";
 	gl.renderAll();
 };
 
