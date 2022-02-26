@@ -31,3 +31,12 @@ const clearButton = document.getElementById("clear");
 const downloadButton = document.getElementById("download");
 
 const fileInput = document.getElementById("file-input");
+
+// Get element item container
+const elementsContainer = document.getElementById("elements-container");
+
+// Get properties item container
+const propertiesContainer = document.getElementById("properties-container");
+const currentObjId = document.getElementById("current-obj-id");
+const currentObjColor = document.getElementById("current-obj-color");
+const recolorSelection = document.getElementById("recolor-selection");

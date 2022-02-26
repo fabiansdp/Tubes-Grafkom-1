@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<div class="menu-container">
-      <h1>Mode : <span id="mode">none</span></h1>
+      		<h1>Mode : <span id="mode">none</span></h1>
 			<button class="menu" id="line-button">
 				<img src="/public/icons/line-segment.png" /> <span id="line">Line</span>
 			</button>
@@ -37,7 +37,24 @@
 				<input type="file" id="file-input" accept="application/json" />
 			</div>
 		</div>
-		<canvas id="canvas" height="720" width="1280"></canvas>
+		<canvas id="canvas" height="720" width="1080"></canvas>
+		<div display="flex" flex-direction="column" height="720px">
+			<div height="360px">
+				<h1>Elements :</h1>
+				<div class="elements-container" id="elements-container"></div>
+			</div>
+			<div height="360px">
+				<h1>Properties :</h1>
+				<div class="properties-container" id="properties-container">
+					<span>Current Object id : <span id="current-obj-id">-</span></span>
+					<span>Current Color : <span id="current-obj-color">-</span></span>
+					<div class="menu color-picker">
+						<input type="color" id="recolor-selection" value="#ff0000" />
+						Select Color
+					</div>
+				</div>
+			</div>
+		</div>
 	</body>
 	<script src="/src/constant.js"></script>
 	<script src="/src/config.js"></script>

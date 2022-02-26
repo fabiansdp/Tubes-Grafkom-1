@@ -121,6 +121,16 @@ const hexToRgb = (hexColor) => {
 		: null;
 };
 
+const componentToHex = (c) => {
+	c *= 255;
+	var hex = c.toString(16);
+	return hex.length == 1 ? "0" + hex : hex;
+}
+
+const rgbToHex = (rgb) => {
+ 	return "#" + componentToHex(rgb.R) + componentToHex(rgb.G) + componentToHex(rgb.B);
+}
+
 const getColorSelection = () => {
 	return document.getElementById("color-selection").value;
 };
@@ -150,3 +160,34 @@ const toggleMenu = () => {
 	if (drawType === DRAW_TYPE.QUADRILATERAL) return quadrilateralButton.classList.add("active");
 	if (drawType === DRAW_TYPE.POLYGON) return polygonButton.classList.add("active");
 };
+
+const changeCurrentPropertiesObj = (idx) => {
+	if (idx >= 0 && idx < gl.objects.length){
+		// change properties values
+		currentObjId.innerHTML = idx;
+		currentObjColor.innerHTML = rgbToHex(gl.objects[idx].color);
+		recolorSelection.value = rgbToHex(gl.objects[idx].color);
+	}
+}
+
+const addElementMenuItem = (idx, name) => {
+	var button = document.createElement("button");
+	button.type = "button";
+	button.innerHTML = name;
+	button.className = "element-button";
+	button.value = idx;
+	button.onclick = function() {
+		changeCurrentPropertiesObj(idx);
+	}
+
+	elementsContainer.appendChild(button);
+}
+
+const changeCurrObjColor = () => {
+	if (!isNaN(currentObjId.innerHTML)){
+		const idx = parseInt(currentObjId.innerHTML);
+		currentObjColor.innerHTML = recolorSelection.value;
+		gl.objects[idx].color = hexToRgb(recolorSelection.value);
+		gl.renderAll();
+	}
+}

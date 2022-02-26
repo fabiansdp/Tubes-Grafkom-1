@@ -29,6 +29,7 @@ const toggleDrawQuadrilateral = () => {
 		if (drawVertices.length === 4) {
 			gl.objects.push({
 				method: DRAW_TYPE.QUADRILATERAL,
+				name: "Quadrilateral",
 				vertices: drawVertices,
 				color: hexToRgb(getColorSelection()),
 			});
@@ -37,14 +38,13 @@ const toggleDrawQuadrilateral = () => {
 		drawVertices = [];
 		drawType = "";
 		gl.renderAll();
-		// TBD: ganti text button
 		resetMenu();
+		addElementMenuItem(gl.objects.length - 1, "Quadrilateral");
 	} else {
 		resetMenu();
 		// turn on
 		isDrawing = true;
 		drawType = DRAW_TYPE.QUADRILATERAL;
-		// TBD: ganti text button
 		toggleMenu();
 	}
 };
@@ -55,6 +55,7 @@ const toggleDrawPolygon = () => {
 		if (drawVertices.length > 2) {
 			gl.objects.push({
 				method: DRAW_TYPE.POLYGON,
+				name: "Polygon",
 				vertices: drawVertices,
 				color: hexToRgb(getColorSelection()),
 			});
@@ -63,14 +64,13 @@ const toggleDrawPolygon = () => {
 		drawVertices = [];
 		drawType = "";
 		gl.renderAll();
-		// TBD: ganti text button
 		resetMenu();
+		addElementMenuItem(gl.objects.length - 1, "Polygon");
 	} else {
 		resetMenu();
 		// turn on
 		isDrawing = true;
 		drawType = DRAW_TYPE.POLYGON;
-		// TBD: ganti text button
 		toggleMenu();
 	}
 };
@@ -91,9 +91,11 @@ const mousedown = (e) => {
 
 			gl.objects.push({
 				method: DRAW_TYPE.LINE,
+				name: "Line",
 				vertices: [drawVertices[0], coordinate],
 				color,
 			});
+			addElementMenuItem(gl.objects.length - 1, "Line");
 			resetAndRender();
 			break;
 		case DRAW_TYPE.SQUARE:
@@ -107,9 +109,11 @@ const mousedown = (e) => {
 			const vertices = convertToSquareVert(drawVertices[0], drawVertices[1]);
 			gl.objects.push({
 				method: DRAW_TYPE.SQUARE,
+				name: "Square",
 				vertices,
 				color,
 			});
+			addElementMenuItem(gl.objects.length - 1, "Square");
 			resetAndRender();
 			break;
 		case DRAW_TYPE.QUADRILATERAL:
@@ -118,9 +122,11 @@ const mousedown = (e) => {
 			if (drawVertices.length >= 4 && isDrawing) {
 				gl.objects.push({
 					method: DRAW_TYPE.QUADRILATERAL,
+					name: "Quadrilateral",
 					vertices: drawVertices,
 					color,
 				});
+				addElementMenuItem(gl.objects.length - 1, "Quadrilateral");
 				return resetAndRender();
 			}
 
