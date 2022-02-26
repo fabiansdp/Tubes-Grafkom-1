@@ -1,6 +1,7 @@
 const DRAW_TYPE = {
 	LINE: "line",
 	SQUARE: "square",
+	RECTANGLE: "rectangle",
 	QUADRILATERAL: "quadrilateral",
 	POLYGON: "polygon",
 };
@@ -15,6 +16,10 @@ const lineText = document.getElementById("line");
 // Get square button
 const squareButton = document.getElementById("square-button");
 const squareText = document.getElementById("square");
+
+// Get rectangle button
+const rectangleButton = document.getElementById("rectangle-button");
+const rectangleText = document.getElementById("rectangle");
 
 // Get quadrilateral button
 const quadrilateralButton = document.getElementById("quadrilateral-button");

@@ -1,19 +1,10 @@
-lineButton.addEventListener("click", toggleDrawLine);
-squareButton.addEventListener("click", toggleDrawSquare);
-quadrilateralButton.addEventListener("click", toggleDrawQuadrilateral);
-polygonButton.addEventListener("click", toggleDrawPolygon);
+lineButton.addEventListener("click", buttonLineHandler);
+squareButton.addEventListener("click", buttonSquareHandler);
+rectangleButton.addEventListener("click", buttonRectangleHandler);
+quadrilateralButton.addEventListener("click", buttonQuadrilateralHandler);
+polygonButton.addEventListener("click", buttonPolygonHandler);
 recolorSelection.addEventListener("input", changeCurrObjColor);
-clearButton.addEventListener("click", () => {
-	gl.clear();
-});
-downloadButton.addEventListener("click", () => {
-	gl.downloadJsonData();
-});
+clearButton.addEventListener("click", buttonClearHandler);
+downloadButton.addEventListener("click", buttonDownloadHandler);
 fileInput.value = "";
-fileInput.addEventListener(
-	"change",
-	(e) => {
-		gl.readUploadedJson(e);
-	},
-	false
-);
+fileInput.addEventListener("change", buttonUploadHandler, false);

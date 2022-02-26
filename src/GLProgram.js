@@ -125,6 +125,7 @@ class GLProgram {
 			const { method, vertices, color } = object;
 			if (method === DRAW_TYPE.LINE) return this.drawLine(vertices, color);
 			if (method === DRAW_TYPE.SQUARE) return this.drawSquare(vertices, color);
+			if (method === DRAW_TYPE.RECTANGLE) return this.drawSquare(vertices, color);
 			if (method === DRAW_TYPE.QUADRILATERAL) return this.drawPolygon(vertices, color);
 			if (method === DRAW_TYPE.POLYGON) return this.drawPolygon(vertices, color);
 		});

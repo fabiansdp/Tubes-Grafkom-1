@@ -125,17 +125,39 @@ const componentToHex = (c) => {
 	c *= 255;
 	var hex = c.toString(16);
 	return hex.length == 1 ? "0" + hex : hex;
-}
+};
 
 const rgbToHex = (rgb) => {
- 	return "#" + componentToHex(rgb.R) + componentToHex(rgb.G) + componentToHex(rgb.B);
-}
+	return "#" + componentToHex(rgb.R) + componentToHex(rgb.G) + componentToHex(rgb.B);
+};
 
 const getColorSelection = () => {
 	return document.getElementById("color-selection").value;
 };
 
 const convertToSquareVert = (v1, v2) => {
+	if (!v1 || !v2) return [];
+	const x1 = v1[0];
+	const y1 = v1[1];
+	let x2 = v2[0];
+	let y2 = v2[1];
+
+	const xdist = Math.abs(x1 - x2);
+	const ydist = Math.abs(y1 - y2);
+
+	const xMul = x2 < x1 ? -1 : 1;
+	const yMul = y2 < y1 ? -1 : 1;
+
+	const minDir = xdist < ydist ? xdist : ydist;
+
+	const realVertex = [x1 + xMul * minDir, y1 + yMul * CANVAS_RATIO * minDir];
+	x2 = realVertex[0];
+	y2 = realVertex[1];
+
+	return [v1, [x2, y1], realVertex, [x1, y2]];
+};
+
+const convertToRectangleVert = (v1, v2) => {
 	if (!v1 || !v2) return [];
 	const x1 = v1[0];
 	const x2 = v2[0];
@@ -149,6 +171,7 @@ const resetMenu = () => {
 	modeText.innerHTML = "<none>";
 	lineButton.classList.remove("active");
 	squareButton.classList.remove("active");
+	rectangleButton.classList.remove("active");
 	quadrilateralButton.classList.remove("active");
 	polygonButton.classList.remove("active");
 };
@@ -157,37 +180,57 @@ const toggleMenu = () => {
 	modeText.innerHTML = `Drawing ${drawType}`;
 	if (drawType === DRAW_TYPE.LINE) return lineButton.classList.add("active");
 	if (drawType === DRAW_TYPE.SQUARE) return squareButton.classList.add("active");
+	if (drawType === DRAW_TYPE.RECTANGLE) return rectangleButton.classList.add("active");
 	if (drawType === DRAW_TYPE.QUADRILATERAL) return quadrilateralButton.classList.add("active");
 	if (drawType === DRAW_TYPE.POLYGON) return polygonButton.classList.add("active");
 };
 
 const changeCurrentPropertiesObj = (idx) => {
-	if (idx >= 0 && idx < gl.objects.length){
+	if (idx >= 0 && idx < gl.objects.length) {
 		// change properties values
 		currentObjId.innerHTML = idx;
 		currentObjColor.innerHTML = rgbToHex(gl.objects[idx].color);
 		recolorSelection.value = rgbToHex(gl.objects[idx].color);
+
+		const elements = document.getElementsByClassName("element-button");
+		for (let el of elements) {
+			el.classList.remove("element-active");
+		}
+		elements[idx].classList.add("element-active");
 	}
-}
+};
 
 const addElementMenuItem = (idx, name) => {
 	var button = document.createElement("button");
 	button.type = "button";
-	button.innerHTML = name;
+	button.innerHTML = `#${idx} - ${name}`;
 	button.className = "element-button";
+	button.id = `element-${idx}`;
 	button.value = idx;
-	button.onclick = function() {
+	button.onclick = function () {
 		changeCurrentPropertiesObj(idx);
-	}
+	};
 
 	elementsContainer.appendChild(button);
-}
+};
 
 const changeCurrObjColor = () => {
-	if (!isNaN(currentObjId.innerHTML)){
+	if (!isNaN(currentObjId.innerHTML)) {
 		const idx = parseInt(currentObjId.innerHTML);
 		currentObjColor.innerHTML = recolorSelection.value;
 		gl.objects[idx].color = hexToRgb(recolorSelection.value);
 		gl.renderAll();
 	}
-}
+};
+
+const resetAndRender = () => {
+	drawVertices = [];
+	isDrawing = false;
+	drawType = "";
+	gl.renderAll();
+};
+
+const forceClose = () => {
+	if (drawType === DRAW_TYPE.POLYGON && drawVertices.length < 2) return resetAndRender();
+	if (drawVertices.length < 2) return resetAndRender();
+};

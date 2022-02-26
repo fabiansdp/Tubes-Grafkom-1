@@ -9,3 +9,4 @@ let dragObject = {
 };
 
 let drawVertices = [];
+let activeObject = "";

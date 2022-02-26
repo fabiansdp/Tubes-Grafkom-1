@@ -1,80 +1,3 @@
-const resetAndRender = () => {
-	drawVertices = [];
-	isDrawing = false;
-	drawType = "";
-	gl.renderAll();
-};
-
-const forceClose = () => {
-	if (drawType === DRAW_TYPE.POLYGON && drawVertices.length < 2) return resetAndRender();
-	console.log(drawType, drawVertices);
-	if (drawVertices.length < 2) return resetAndRender();
-};
-
-const toggleDrawLine = () => {
-	drawType = DRAW_TYPE.LINE;
-	drawVertices = [];
-	toggleMenu();
-};
-
-const toggleDrawSquare = () => {
-	drawType = DRAW_TYPE.SQUARE;
-	drawVertices = [];
-	toggleMenu();
-};
-
-const toggleDrawQuadrilateral = () => {
-	if (isDrawing && drawType === DRAW_TYPE.QUADRILATERAL) {
-		// turn off
-		if (drawVertices.length === 4) {
-			gl.objects.push({
-				method: DRAW_TYPE.QUADRILATERAL,
-				name: "Quadrilateral",
-				vertices: drawVertices,
-				color: hexToRgb(getColorSelection()),
-			});
-		}
-		isDrawing = false;
-		drawVertices = [];
-		drawType = "";
-		gl.renderAll();
-		resetMenu();
-		addElementMenuItem(gl.objects.length - 1, "Quadrilateral");
-	} else {
-		resetMenu();
-		// turn on
-		isDrawing = true;
-		drawType = DRAW_TYPE.QUADRILATERAL;
-		toggleMenu();
-	}
-};
-
-const toggleDrawPolygon = () => {
-	if (isDrawing && drawType === DRAW_TYPE.POLYGON) {
-		// turn off
-		if (drawVertices.length > 2) {
-			gl.objects.push({
-				method: DRAW_TYPE.POLYGON,
-				name: "Polygon",
-				vertices: drawVertices,
-				color: hexToRgb(getColorSelection()),
-			});
-		}
-		isDrawing = false;
-		drawVertices = [];
-		drawType = "";
-		gl.renderAll();
-		resetMenu();
-		addElementMenuItem(gl.objects.length - 1, "Polygon");
-	} else {
-		resetMenu();
-		// turn on
-		isDrawing = true;
-		drawType = DRAW_TYPE.POLYGON;
-		toggleMenu();
-	}
-};
-
 const mousedown = (e) => {
 	const coordinate = getWebGLPosition(e, gl);
 	const color = hexToRgb(getColorSelection());
@@ -106,14 +29,31 @@ const mousedown = (e) => {
 				return;
 			}
 
-			const vertices = convertToSquareVert(drawVertices[0], drawVertices[1]);
+			const squareVert = convertToSquareVert(drawVertices[0], drawVertices[1]);
 			gl.objects.push({
 				method: DRAW_TYPE.SQUARE,
 				name: "Square",
-				vertices,
+				vertices: squareVert,
 				color,
 			});
 			addElementMenuItem(gl.objects.length - 1, "Square");
+			resetAndRender();
+			break;
+		case DRAW_TYPE.RECTANGLE:
+			if (drawVertices.length < 2) {
+				isDrawing = true;
+				drawVertices.push(coordinate);
+				return;
+			}
+
+			const rectangleVert = convertToRectangleVert(drawVertices[0], drawVertices[1]);
+			gl.objects.push({
+				method: DRAW_TYPE.RECTANGLE,
+				name: "Rectangle",
+				vertices: rectangleVert,
+				color,
+			});
+			addElementMenuItem(gl.objects.length - 1, "Rectangle");
 			resetAndRender();
 			break;
 		case DRAW_TYPE.QUADRILATERAL:
@@ -169,24 +109,18 @@ const mousemove = (e) => {
 	// Kalau lagi ngedrag vertex
 	if (isDragging) {
 		const { objectIdx, vertexIdx, method } = dragObject;
-		if (method !== DRAW_TYPE.SQUARE) {
+		if (method !== DRAW_TYPE.SQUARE && method !== DRAW_TYPE.RECTANGLE) {
 			gl.objects[objectIdx].vertices[vertexIdx] = coordinate;
 			return gl.renderAll();
 		}
 
 		let vertices = gl.objects[objectIdx].vertices;
-		const pivot = vertices[vertexIdx];
+		const acrossVertex = vertices[(vertexIdx + 2) % 4];
 
-		vertices = vertices.map((v, idx) => {
-			if (idx === vertexIdx) return coordinate;
-			//maintain x
-			if (v[0] === pivot[0]) {
-				v[0] = coordinate[0];
-			} else if (v[1] === pivot[1]) {
-				v[1] = coordinate[1];
-			}
-			return v;
-		});
+		vertices =
+			method === DRAW_TYPE.SQUARE
+				? convertToSquareVert(acrossVertex, coordinate)
+				: convertToRectangleVert(acrossVertex, coordinate);
 
 		gl.objects[objectIdx].vertices = vertices;
 		return gl.renderAll();
@@ -216,6 +150,19 @@ const mousemove = (e) => {
 				const n = squareVert.length;
 				for (let i = 0; i <= n; i++) {
 					gl.drawLine([squareVert[i % n], squareVert[(i + 1) % n]], hexToRgb(color));
+				}
+			}
+			gl.renderAll();
+			return;
+		case DRAW_TYPE.RECTANGLE:
+			if (drawVertices.length === 2) drawVertices.pop();
+			drawVertices.push(coordinate);
+
+			if (drawVertices.length > 1) {
+				const rectangleVert = convertToRectangleVert(drawVertices[0], drawVertices[1]);
+				const n = rectangleVert.length;
+				for (let i = 0; i <= n; i++) {
+					gl.drawLine([rectangleVert[i % n], rectangleVert[(i + 1) % n]], hexToRgb(color));
 				}
 			}
 			gl.renderAll();
