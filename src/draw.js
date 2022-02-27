@@ -77,7 +77,6 @@ const mousedown = (e) => {
 			return;
 		case DRAW_TYPE.POLYGON:
 			drawVertices.push(coordinate);
-			gl.renderAll();
 			for (let i = 0; i <= n; i++) {
 				gl.drawLine([drawVertices[i % n], drawVertices[(i + 1) % n]], hexToRgb(color));
 			}
@@ -138,8 +137,8 @@ const mousemove = (e) => {
 				drawVertices.pop();
 			}
 			drawVertices.push(coordinate);
-			gl.drawLine(drawVertices, hexToRgb(color));
 			gl.renderAll();
+			gl.drawLine(drawVertices, hexToRgb(color));
 			return;
 
 		case DRAW_TYPE.SQUARE:
@@ -147,6 +146,7 @@ const mousemove = (e) => {
 				drawVertices.pop();
 			}
 			drawVertices.push(coordinate);
+			gl.renderAll();
 			if (drawVertices.length > 1) {
 				const squareVert = convertToSquareVert(drawVertices[0], drawVertices[1]);
 				const n = squareVert.length;
@@ -154,12 +154,12 @@ const mousemove = (e) => {
 					gl.drawLine([squareVert[i % n], squareVert[(i + 1) % n]], hexToRgb(color));
 				}
 			}
-			gl.renderAll();
 			return;
 		case DRAW_TYPE.RECTANGLE:
 			if (drawVertices.length === 2) drawVertices.pop();
 			drawVertices.push(coordinate);
 
+			gl.renderAll();
 			if (drawVertices.length > 1) {
 				const rectangleVert = convertToRectangleVert(drawVertices[0], drawVertices[1]);
 				const n = rectangleVert.length;
@@ -167,7 +167,6 @@ const mousemove = (e) => {
 					gl.drawLine([rectangleVert[i % n], rectangleVert[(i + 1) % n]], hexToRgb(color));
 				}
 			}
-			gl.renderAll();
 			return;
 
 		case DRAW_TYPE.QUADRILATERAL:
