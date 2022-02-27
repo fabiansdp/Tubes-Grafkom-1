@@ -84,10 +84,10 @@ const mousedown = (e) => {
 	}
 
 	if (isDragging) {
-		isDragging = false
-		modeText.innerHTML = "none"
-		return
-	};
+		isDragging = false;
+		modeText.innerHTML = "none";
+		return;
+	}
 
 	if (drawType !== "") return;
 
@@ -100,7 +100,7 @@ const mousedown = (e) => {
 		dragObject.objectIdx = objectIdx;
 		dragObject.vertexIdx = vertexIdx;
 		dragObject.method = method;
-		modeText.innerHTML = `Dragging ${method}`
+		modeText.innerHTML = `Dragging ${method}`;
 	}
 	return;
 };
@@ -124,6 +124,18 @@ const mousemove = (e) => {
 				: convertToRectangleVert(acrossVertex, coordinate);
 
 		gl.objects[objectIdx].vertices = vertices;
+
+		const precision = 0.02;
+		const updatedObject = gl.getNearestVertex(coordinate);
+
+		if (updatedObject.distance < precision) {
+			isDragging = true;
+			dragObject.objectIdx = updatedObject.objectIdx;
+			dragObject.vertexIdx = updatedObject.vertexIdx;
+			dragObject.method = updatedObject.method;
+			modeText.innerHTML = `Dragging ${method}`;
+		}
+
 		return gl.renderAll();
 	}
 

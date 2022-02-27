@@ -159,6 +159,7 @@ const convertToSquareVert = (v1, v2) => {
 
 const convertToRectangleVert = (v1, v2) => {
 	if (!v1 || !v2) return [];
+
 	const x1 = v1[0];
 	const x2 = v2[0];
 	const y1 = v1[1];
