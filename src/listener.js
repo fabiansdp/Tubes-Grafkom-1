@@ -1,3 +1,6 @@
+window.addEventListener("click", windowCloseModal);
+helpButton.addEventListener("click", helpButtonHandler);
+modalClose.addEventListener("click", closeModalHandler);
 lineButton.addEventListener("click", buttonLineHandler);
 squareButton.addEventListener("click", buttonSquareHandler);
 rectangleButton.addEventListener("click", buttonRectangleHandler);

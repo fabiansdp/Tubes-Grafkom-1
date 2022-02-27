@@ -11,6 +11,7 @@
 	<body>
 		<div class="menu-container">
       		<h1>Mode : <span id="mode">none</span></h1>
+			<button class="menu" id="help"><img src="/public/icons/help.svg" />Help</button>
 			<button class="menu" id="line-button">
 				<img src="/public/icons/line-segment.png" /> <span id="line">Line</span>
 			</button>
@@ -55,6 +56,127 @@
 						<input type="color" id="recolor-selection" value="#ff0000" />
 						Select Color
 					</div>
+				</div>
+			</div>
+		</div>
+		<div id="help-modal">
+			<div class="help-content">
+				<div class="title-help">
+					<span class="close">&times;</span>
+					<h1>Help</h1>
+				</div>
+				<div>
+					<h2>Menggambar Garis</h2>
+					<ul>
+						<li>Tekan tombol Select Color untuk memilih warna pada sebelah kiri canvas.</li>
+						<li>Tekan tombol Line pada sebelah kiri canvas.</li>
+						<li>Klik canvas untuk menentukan titik awal garis.</li>
+						<li>Gerakkan mouse untuk melihat preview garis yang akan dibentuk.</li>
+						<li>Klik canvas lagi untuk menentukan titik akhir garis.</li>
+					</ul>
+				</div>
+				<div>
+					<h2>Menggambar Persegi</h2>
+					<ul>
+						<li>Tekan tombol Square pada sebelah kiri canvas.</li>
+						<li>Pilih satu titik sudut pada canvas dengan mengklik sekali.</li>
+						<li>Gerakan mouse ke posisi yang diinginkan.</li>
+						<li>Klik sekali lagi untuk menentukan titik sudut persegi.</li>
+						<li>Persegi akan terbentuk dengan tetap mempertahankan seluruh sisi persegi dengan ukuran yang sama.</li>
+					</ul>
+				</div>
+				<div>
+					<h2>Menggambar Persegi Panjang</h2>
+					<ul>
+						<li>Tekan tombol Rectangle pada sebelah kiri canvas.</li>
+						<li>Pilih satu titik sudut pada canvas dengan mengklik sekali.</li>
+						<li>Gerakan mouse ke posisi yang diinginkan.</li>
+						<li>Klik sekali lagi untuk menentukan titik sudut persegi.</li>
+						<li>Segi empat akan terbentuk dengan tetap mempertahankan sisi yang sejajar pada segi empat dengan panjang yang sama.</li>
+					</ul>
+				</div>
+				<div>
+					<h2>Menggambar Segi Empat Sembarang</h2>
+					<ul>
+						<li>Tekan tombol Quadrilateral pada sebelah kiri canvas.</li>
+						<li>Pilih empat titik pada canvas dengan mengklik di posisi dimana titik sudut ingin diletakan.</li>
+						<li>Apabila titik keempat sudah dipilih maka segi empat sembarang akan langsung digambar di canvas sesuai dengan titik sudut yang telah dipilih.</li>
+					</ul>
+				</div>
+				<div>
+					<h2>Menggambar Poligon</h2>
+					<ul>
+						<li>Pilih menu poligon hingga dituliskan “Mode : Drawing Polygon”.</li>
+						<li>Mulai pilih titik di canvas sesuai dengan keinginan.</li>
+						<li>Apabila seluruh titik yang diinginkan sudah digambar, tekan kembali menu “Polygon” hingga tidak lagi berwarna hijau.</li>
+						<li>Poligon akan tergambar di canvas sesuai dengan titik sudut yang telah dipilih.</li>
+					</ul>
+				</div>
+				<div>
+					<h2>Menggeser Titik</h2>
+					<ul>
+						<li>Tekan titik sudut suatu objek pada canvas.</li>
+						<li>Gerakkan titik ke posisi yang diinginkan.</li>
+						<li>Tekan canvas lagi untuk mengunci titik pada posisi yang telah dipilih.</li>
+					</ul>
+				</div>
+				<div>
+					<h2>Menggeser Titik pada Persegi</h2>
+					<ul>
+						<li>Tekan titik sudut dari objek persegi pada canvas.</li>
+						<li>Gerakkan titik ke posisi yang diinginkan.</li>
+						<li>Tekan canvas lagi untuk mengunci titik pada posisi yang telah dipilih.</li>
+						<li>Persegi akan berubah ukuran dengan tetap mempertahankan panjang seluruh sisinya agar tetap sama.</li>
+					</ul>
+				</div>
+				<div>
+					<h2>Menggeser Titik pada Persegi Panjang</h2>
+					<ul>
+						<li>Tekan titik sudut dari objek persegi pada canvas.</li>
+						<li>Gerakkan titik ke posisi yang diinginkan.</li>
+						<li>Tekan canvas lagi untuk mengunci titik pada posisi yang telah dipilih.</li>
+						<li>Persegi panjang akan berubah ukuran dengan tetap mempertahankan panjang sisi sejajarnya tetap sama.</li>
+					</ul>
+				</div>
+				<div>
+					<h2>Menggambar Garis</h2>
+					<ul>
+						<li>Tekan tombol Select Color untuk memilih warna pada sebelah kiri canvas.</li>
+						<li>Tekan tombol Line pada sebelah kiri canvas.</li>
+						<li>Klik canvas untuk menentukan titik awal garis.</li>
+						<li>Gerakkan mouse untuk melihat preview garis yang akan dibentuk.</li>
+						<li>Klik canvas lagi untuk menentukan titik akhir garis.</li>
+					</ul>
+				</div>
+				<div>
+					<h2>Mengubah Warna</h2>
+					<ul>
+						<li>Pilih elemen yang ingin diubah pada bagian Elements di sisi kanan canvas.</li>
+						<li>Pilih warna baru elemen pada pilihan warna pada bagian Properties.</li>
+					</ul>
+				</div>
+				<div>
+					<h2>Melakukan Clear</h2>
+					<ul>
+						<li>Untuk membersihkan canvas atau papan kerja menjadi kosong lagi dapat dilakukan dengan menekan tombol clear.</li>
+						<li>Harap diperhatikan bahwa tombol clear menghapus seluruh objek yang telah digambar di canvas tanpa menyimpan histori objek tersebut.</li>
+					</ul>
+				</div>
+				<div>
+					<h2>Melakukan Export</h2>
+					<ul>
+						<li>Buat gambar pada canvas.</li>
+						<li>Tekan tombol Download pada bagian sisi kiri canvas.</li>
+						<li>Simpan file pada komputer.</li>
+					</ul>
+				</div>
+				<div>
+					<h2>Melakukan Import</h2>
+					<ul>
+						<li>Tekan tombol Browse pada menu Upload JSON file.</li>
+						<li>Pilih file JSON yang akan dilakukan import.</li>
+						<li>Tekan tombol OK dan gambar akan muncul.</li>
+					</ul>
 				</div>
 			</div>
 		</div>

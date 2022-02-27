@@ -9,6 +9,11 @@ const DRAW_TYPE = {
 //get mode
 const modeText = document.getElementById("mode");
 
+// Get help button
+const helpButton = document.getElementById("help");
+const modal = document.getElementById("help-modal");
+const modalClose = document.getElementsByClassName("close")[0];
+
 // Get line button
 const lineButton = document.getElementById("line-button");
 const lineText = document.getElementById("line");

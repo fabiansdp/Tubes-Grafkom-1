@@ -1,3 +1,17 @@
+const helpButtonHandler = () => {
+	modal.style.display = "block"
+}
+
+const windowCloseModal = (e) => {
+	if (e.target === modal) {
+		modal.style.display = "none";
+	}
+}
+
+const closeModalHandler = () => {
+	modal.style.display = "none";
+}
+
 const buttonLineHandler = () => {
 	drawType = DRAW_TYPE.LINE;
 	drawVertices = [];
